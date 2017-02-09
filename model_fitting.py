@@ -1,7 +1,7 @@
 import numpy as np
 from funkcije import *
 
-f = open ('post_podaci_backup.txt','r')
+f = open ('podaci.txt','r')
 
 lines = f.readlines()
 n_of_lines=len(lines)
@@ -49,7 +49,7 @@ error=calculate_error(X,Y1,Y2,napad,obrana)
 print 'Starting error ', error
 
 #namjestanje koeficijenata
-for iteration in xrange(100):
+for iteration in xrange(200):
 	for klub in xrange(20):
 		napad_change=calculate_change_in_attack(X,Y1,Y2,napad,obrana,klub)
 		napad[klub]+=napad_change

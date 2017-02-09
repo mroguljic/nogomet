@@ -10,11 +10,10 @@ klubovi={14:'Newcastle', 1:'Liverpool', 19:'Man United', 2:'Norwich',
 
 invetirani_klubovi={v: k for k, v in klubovi.iteritems()}
 
-f = open ('post_podaci_backup.txt','r')
+f = open ('podaci.txt','r')
 
 lines = f.readlines()
 n_of_lines=len(lines)
-print n_of_lines
 
 broj_kola=20 #na koliko kola zelimo trenirati
 broj_utakmica=10*broj_kola #svako kolo ima 10 utakmica
