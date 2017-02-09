@@ -17,7 +17,12 @@ klubovi={14:'Newcastle', 1:'Liverpool', 19:'Man United', 2:'Norwich',
 12:'Fulham', 13:'Hull', 11:'Everton', 16:'Stoke', 5:'West Brom', 
 4:'Swansea', 7:'Chelsea', 18:'Tottenham'}
 
-for i in xrange(1,201):
+
+broj_kola=20 #na koliko kola zelimo trenirati
+broj_utakmica=10*broj_kola #svako kolo ima 10 utakmica
+
+
+for i in xrange(1,broj_utakmica):
 	line=lines[i]
 	line=line.split(',')
 
@@ -44,7 +49,7 @@ error=calculate_error(X,Y1,Y2,napad,obrana)
 print 'Starting error ', error
 
 #namjestanje koeficijenata
-for iteration in xrange(500):
+for iteration in xrange(100):
 	for klub in xrange(20):
 		napad_change=calculate_change_in_attack(X,Y1,Y2,napad,obrana,klub)
 		napad[klub]+=napad_change
@@ -54,6 +59,17 @@ for iteration in xrange(500):
 		print calculate_error(X,Y1,Y2,napad,obrana)
 		print '----------'
 
+print 'Finishing error '
+print calculate_error(X,Y1,Y2,napad,obrana)
 
-print napad
-print obrana
+#print napad
+#print obrana
+
+koeficijenti_napad=open( 'koeficijenti_napad.txt' , 'w+' )
+koeficijenti_obrana=open( 'koeficijenti_obrana.txt' , 'w+' )
+
+for koef in napad:
+ 	koeficijenti_napad.write("%s\n" % koef)
+
+for koef in obrana:
+	koeficijenti_obrana.write("%s\n" % koef)

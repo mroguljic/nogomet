@@ -14,6 +14,8 @@ def calculate_error(X,Y1,Y2,napad,obrana):	#izracuna koliko nam je model kriv
 	#Y2 - isto za goste
 	#napad,obrana - koeficijenti za napad,obranu
 	#klub - kojem klubu prilagodavamo koeficijente
+
+	#ideja - dodati tezinu zadnjim utakmicama
 	total_error=0.
 	for no,game in enumerate(X):
 		domacin=int(game.index(1)) #koji tim je domacin/gost, uzimamo int jer nas zanima koje je njegov red u listama napad/obrana
@@ -23,7 +25,7 @@ def calculate_error(X,Y1,Y2,napad,obrana):	#izracuna koliko nam je model kriv
 		gost_golovi=int(Y2[no][0])
 		predvideno_ht_golovi=napad[domacin]-obrana[gost] 	#ht - home team , at - away team
 		predvideno_at_golovi=napad[gost]-obrana[domacin]
-		#game_error=abs(predvideno_ht_golovi-domacin_golovi)+abs(predvideno_at_golovi-gost_golovi) 	#velicina koja mjeri koliko smoo pogrijesili
+		#game_error=abs(predvideno_ht_golovi-domacin_golovi)+abs(predvideno_at_golovi-gost_golovi) 	#velicina koja mjeri koliko smo pogrijesili
 		game_error=(predvideno_ht_golovi-domacin_golovi)*(predvideno_ht_golovi-domacin_golovi)	
 		+(predvideno_at_golovi-gost_golovi)*(predvideno_at_golovi-gost_golovi)	#alternativna mjera greske, vise kaznjava kad jako pogrijesimo
 		total_error+=game_error
@@ -67,3 +69,37 @@ def calculate_change_in_defense(X,Y1,Y2,napad,obrana,klub,threshold=-0.,step=0.0
 			return step
 		else:
 			return -step
+
+
+def predvidi_rezultat(klub1,klub2):
+	#ucita podatke iz koeficijent_napad/obrana.txt i da predvidi rezultate
+	#klub1/2 je string kluba, npr 'Newcastle'
+
+	klubovi={14:'Newcastle', 1:'Liverpool', 19:'Man United', 2:'Norwich',
+9:'Man City', 15:'Southampton', 6:'West Ham', 10:'Aston Villa', 
+0:'Arsenal', 8:'Crystal Palace', 17:'Cardiff', 3:'Sunderland', 
+12:'Fulham', 13:'Hull', 11:'Everton', 16:'Stoke', 5:'West Brom', 
+4:'Swansea', 7:'Chelsea', 18:'Tottenham'}
+
+	invetirani_klubovi={v: k for k, v in klubovi.iteritems()}
+
+	koeficijenti_napad=open( 'koeficijenti_napad.txt' , 'r' )
+	koeficijenti_obrana=open( 'koeficijenti_obrana.txt' , 'r' )
+
+
+	napad = [float(line[:-1]) for line in koeficijenti_napad]
+	obrana = [float(line[:-1]) for line in koeficijenti_obrana]
+
+	napad_1=napad[invetirani_klubovi[klub1]]	#invertirani klubovi je rjecnik koji povezuje ime kluba s rednim brojem
+	obrana_1=obrana[invetirani_klubovi[klub1]]
+
+	napad_2=napad[invetirani_klubovi[klub2]]	
+	obrana_2=obrana[invetirani_klubovi[klub2]]
+
+	home_goals=napad_1-obrana_2
+	away_goals=napad_2-obrana_1
+
+	print klub1+'-'+klub2
+	print str(home_goals)+'-'+str(away_goals)
+
+	#return [home_goals,away_goals]
